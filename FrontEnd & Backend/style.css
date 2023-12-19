@@ -1,0 +1,80 @@
+.navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #ffffff;
+}
+
+/* Color of the navbar BEFORE scroll */
+.navbar-scroll {
+  background-color: #223C77;
+}
+
+/* Color of the links AFTER scroll */
+.navbar-scrolled .nav-link,
+.navbar-scrolled .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #262626;
+}
+
+/* Color of the navbar AFTER scroll */
+.navbar-scrolled {
+  background-color: #fff;
+}
+
+/* An optional height of the navbar AFTER scroll */
+.navbar.navbar-scroll.navbar-scrolled {
+  padding-top: auto;
+  padding-bottom: auto;
+}
+.navbar-brand {
+  font-size: unset;
+  height: 3.5rem;
+}
+body{
+    background-color:  #f0ebf8;
+}
+.blockquote-custom-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -40px;
+  left: 19px;
+}
+.like:hover{
+  font-size: 17px;
+  color: #198754;
+}
+.dislike:hover{
+  font-size: 17px;
+  color: #DC3545;
+}
+.bg{
+  background-color: #e9ecef !important;
+}
+.bg1{
+  background-color: #b2c9ed;
+}
+.h-80{
+  height: 200px !important;
+}
+@media screen and (min-width: 1200px) {
+  .w{
+    width: 700px !important;
+   }
+   .w1{
+    width: 600px !important;
+   }
+  }
+
+  @media screen and (max-width: 767px) {
+    .fs{
+      font-size: 10px !important;
+    }
+    .w5{
+      width: 350px !important;
+    }
+  }
