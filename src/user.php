@@ -149,5 +149,10 @@ class User
         $requete = "INSERT INTO users (last_name, first_name, email, password) VALUES ('$nom', '$prenom', '$email', '$mot_de_passe')";
         $query = mysqli_query($this->conn, $requete);
     }
+    public function redirect($location)
+    {
+        header("Location: $location");
+        exit();
+    }
 }
 ?>

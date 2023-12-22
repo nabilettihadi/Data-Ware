@@ -12,7 +12,7 @@ if (isset($_POST["submit"])) {
     $email = $_POST["email"];
     $mot_de_passe = $_POST["password"];
 
-    $inscription->validerFormulaire($nom, $prenom, $email, $mot_de_passe);
+    $inscription->validateForm($nom, $prenom, $email, $mot_de_passe);
 
     $erreur_prenom = $inscription->erreur_prenom;
     $erreur_nom = $inscription->erreur_nom;

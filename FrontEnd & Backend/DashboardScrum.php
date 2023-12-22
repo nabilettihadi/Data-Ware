@@ -1,26 +1,15 @@
 <?php
 include "connexion.php";
-include "../src/TeamManager.php";
+include "../src/ScrumMaster.php";
+
+session_start();
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 
 $message = "";
-session_start();
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->verifierAutorisation();
 
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
-}
-
-if ($_SESSION['role'] != "scrum_master") {
-    header("Location: community.php");
-    exit();
-}
-
-$user = $_SESSION['username'];
-$membre = $_SESSION['id'];
-
-$teamManager = new TeamManager($conn);
-
-$teams = $teamManager->getTeams($membre);
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +58,9 @@ $teams = $teamManager->getTeams($membre);
             </div>
         </nav>
     </header>
-    <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
+    <?php
+    $scrumMaster->afficherBienvenue();
+    ?>
 
     <h1 class="d-flex justify-content-center mt-5"> Gestion des Equipes </h1>
     <div class="container mt-4">
@@ -91,31 +82,17 @@ $teams = $teamManager->getTeams($membre);
                                 <th class=" align-middle">Supprimer</th>
                             </tr>
                         </thead>
-                    <?php
-                    if (empty($teams)) {
-                        $message = "Il n'y a pas encore d'équipe.";
-                    } else {
-                        // Iterate through teams
-                        foreach ($teams as $row) {
-                            ?>
-                            <tbody class="table-light">
-                                <tr>
-                                    <td><?= $row['Name_equipe']; ?></td>
-                                    <td><?= $row['date_creation']; ?></td>
-                                    <td><?= $row['Last_name']; ?></td>
-                                    <td><a href="modifierequi.php?id=<?= $row['id_equipe'] ?>" class="ms-4"><i class="bi bi-pencil"></i></a></td>
-                                    <td><a href="supprimerequi.php?id=<?= $row['id_equipe'] ?>" class="text-danger ms-4"><i class="bi bi-trash3-fill"></i></a></td>
-                                </tr>
-                            </tbody>
-                    <?php
-                        }
-                    }
-                    ?>
+                        <?php
+                        $scrumMaster->afficherGestionEquipes($membre);
+                        ?>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <p class="text-center fs-5 fw-bolder text-danger"><?php echo $message; ?></p>
+    <?php
+    $scrumMaster->afficherMessageErreur($message);
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

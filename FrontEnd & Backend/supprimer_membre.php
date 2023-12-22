@@ -1,12 +1,12 @@
 <?php
 include "connexion.php";
-include "../src/deleteMembre.php";
+include "../src/ScrumMaster.php";
+session_start();
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 $membre_id = $_GET['membre_id'];
-$userManager = new UserManager($conn);
-$result = $userManager->removeUserFromTeam($membre_id);
-if ($result) {
-    header("Location: Gestionequi.php");
-    exit();
-}
+
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->supprimerMembre($scrumMaster);
 
 ?>

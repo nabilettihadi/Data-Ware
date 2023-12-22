@@ -6,9 +6,9 @@ if ($_SESSION['autoriser'] != "oui") {
 }
 
 include "connexion.php";
-include "../src/modifier-projet.php";
+include "../src/ProductOwner.php";
 
-$projectManager = new Project($conn);
+$projectManager = new ProductOwner($conn,$_SESSION['username']);
 
 $id = $_GET['id'];
 $row = $projectManager->getProjectById($id);

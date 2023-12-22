@@ -1,32 +1,19 @@
 <?php
 include "connexion.php";
-include "../src/ProjectAssignmentManager.php";
-
-$projectAssignmentManager = new ProjectAssignmentManager($conn);
-
+include "../src/ScrumMaster.php";
 session_start();
+$message = "";
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
-}
-
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->verifierAutorisation();
 if (isset($_POST["submit"])) {
     // Récupérer les valeurs du formulaire
     $selectedEquipe = $_POST["equipe"];
     $selectedProjet = $_POST["projet"];
-
-    $success = $projectAssignmentManager->assignProjectToTeam($selectedEquipe, $selectedProjet);
-
-    if ($success) {
-        header("Location: Assignation.php");
-        exit();
-    }
-}
-
-$membre = $_SESSION['id'];
-$teams = $projectAssignmentManager->getTeamsForScrumMaster($membre);
-$projects = $projectAssignmentManager->getAllProjects();
+    $scrumMaster->assignationProjets($selectedEquipe,$selectedProjet);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +30,7 @@ $projects = $projectAssignmentManager->getAllProjects();
 </head>
 
 <body>
-<section class="vh-100" style="background-color: #6BA7F0;">
+    <section class="vh-100" style="background-color: #6BA7F0;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
@@ -57,38 +44,14 @@ $projects = $projectAssignmentManager->getAllProjects();
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body text-black">
 
-                                    <form method="post" action="">
-
-
-                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Affecter une
-                                            équipe à un projet</h5>
-                                        <label for="cars" class="my-2 ">Sélectionnez Equipe :</label>
-                                        <select class="form-select" aria-label="Default select example" name="equipe">
+                                    
                                             <?php
+                                            $scrumMaster->assignationEquipes($membre);
+                                            ?>
 
-                               $queryEquipe = mysqli_query($conn, "SELECT id_equipe, Name_equipe FROM equipes WHERE scrum_master_id=$membre ;");
-                                while ($equipe = mysqli_fetch_assoc($queryEquipe)) {
-                               echo "<option value='{$equipe['id_equipe']}'>{$equipe['Name_equipe']}</option>";
-                             }
-                             ?>
-
-                                        </select>
-
-                                        <label for="cars" class="my-2">Sélectionnez le projets :</label>
-                                        <select class="form-select" aria-label="Default select example" name="projet">
-                                            <?php
-                            $queryProjet = mysqli_query($conn, "SELECT id_projets, nom_projet FROM projets  ");
-                            while ($projet = mysqli_fetch_assoc($queryProjet)) {
-                           echo "<option value='{$projet['id_projets']}'>{$projet['nom_projet']}</option>";
-                          }
-                           ?>
-                                        </select>
-                                        <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
-                                            <button class="btn btn-primary btn-lg btn-block" type="submit"
-                                                name="submit">Valider</button>
-                                        </div>
-
-                                    </form>
+                                    <?php
+                                    $scrumMaster->afficherMessageErreur($message);
+                                    ?>
 
                                 </div>
                             </div>
@@ -99,8 +62,6 @@ $projects = $projectAssignmentManager->getAllProjects();
         </div>
     </section>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

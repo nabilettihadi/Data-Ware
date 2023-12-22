@@ -1,34 +1,19 @@
 <?php
 include "connexion.php";
-include "../src/modifierTeam.php";
-
+include "../src/ScrumMaster.php";
 session_start();
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
-}
-
-// Create an instance of TeamManager
-$teamManager = new TeamManager($conn);
-
+$message = "";
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 $id = $_GET['id'];
-$req = mysqli_query($conn, "SELECT * FROM equipes WHERE id_equipe= $id");
-$row = mysqli_fetch_array($req);
-
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$row = $scrumMaster->selectModifierEquipe($id);
+$scrumMaster->verifierAutorisation();
 if (isset($_POST["submit"])) {
-    // Récupérer les valeurs du formulaire
     $nom = $_POST["name"];
     $dated = $_POST["dated"];
-
-    // Use the TeamManager method to update the team
-    $result = $teamManager->updateTeam($id, $nom, $dated);
-
-    if ($result) {
-        header("Location: DashboardScrum.php");
-        exit();
-    }
+    $scrumMaster->modifierEquipe($nom,$dated,$id);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -93,6 +78,8 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
+
+
 
 </body>
 

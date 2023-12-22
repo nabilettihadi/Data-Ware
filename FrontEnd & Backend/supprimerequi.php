@@ -1,19 +1,14 @@
 <?php
 include "connexion.php";
-include "../src/deleteTeam.php";
+include "../src/ScrumMaster.php";
 
 session_start();
-$membre = $_SESSION['id'];
 
-// Create an instance of TeamManager
-$teamManager = new TeamManager($conn);
-
+$message = "";
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 $id = $_GET['id'];
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->supprimerEquipe($id,$membre);
 
-// Use the TeamManager method to remove the team
-$result = $teamManager->removeTeam($id, $membre);
-
-if ($result) {
-    header("Location: DashboardScrum.php");
-}
 ?>

@@ -1,26 +1,14 @@
 <?php
 include "connexion.php";
-include "../src/TeamMemberManager.php";
-
-$message = "";
-$msg = "";
+include "../src/ScrumMaster.php";
 session_start();
+$message = "";
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
-}
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->verifierAutorisation();
 
-if ($_SESSION['role'] != "scrum_master") {
-    header("Location: community.php");
-    exit();
-}
-
-$user = $_SESSION['username'];
-$membre = $_SESSION['id'];
-
-// Create an instance of TeamMemberManager
-$teamMemberManager = new TeamMemberManager($conn);
 ?>
 
 <!DOCTYPE html>
@@ -70,46 +58,20 @@ $teamMemberManager = new TeamMemberManager($conn);
             </div>
         </nav>
     </header>
-        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
+    <?php
+    $scrumMaster->afficherBienvenue();
+    ?>
     
     <h1 class="d-flex justify-content-center mt-5"> Gestion les membres d'équipe </h1>
 
     <div class=" d-flex justify-content-center ">
         <div class="col-md-10 px-2 ">
+        <?php
+        $scrumMaster->afficherGestionMembre($membre);
+        ?>
             <?php
-            $resultat = mysqli_query($conn, "SELECT * FROM equipes WHERE scrum_master_id=$membre ");
-            if (mysqli_num_rows($resultat) == 0) {
-                $msg = "Il n'y a pas encore d'équipe.";
-            } else {
-                while ($row = mysqli_fetch_assoc($resultat)) {
-                    $equipe_id = $row['id_equipe'];
-                    $equipe_nom = $row['Name_equipe'];
-                    echo  "<h3 class='mt-4 text-primary'> Les membres d'équipe $equipe_nom : <a class='bg-primary rounded-3 text-light text-decoration-none btn' href='Ajouter_membre.php?equipe_id=$equipe_id'>Ajouter un membre</a> </h3>";
-
-                    // Get team members using the TeamMemberManager class
-                    $members = $teamMemberManager->getTeamMembers($equipe_id);
-
-                    if (empty($members)) {
-                        echo "<h6 class='text-danger'> Il n'y a pas encore de membre. </h6>";
-                    } else {
-                        echo "<ul class='list-unstyled mt-4'>";
-                        foreach ($members as $membre_row) {
-                            $membre_prenom = $membre_row['First_name'];
-                            $membre_nom = $membre_row['Last_name'];
-                            $membre_id = $membre_row['id_user'];
-
-                            // Afficher chaque membre avec un bouton pour le supprimer
-                            echo "<div class='d-flex justify-content-between w-25 mb-3 mt-3 flex-wrap'>
-                                <li class='fs-5'>$membre_prenom $membre_nom </li>
-                                <a class='bg-danger rounded-3 text-light text-decoration-none btn ' href='supprimer_membre.php?membre_id=$membre_id'>Supprimer</a>
-                            </div>";
-                        }
-                        echo "</ul>";
-                    }
-                }
-            }
+            $scrumMaster->afficherMessageErreur($message);
             ?>
-            <h2 class="text-danger mt-5 text-center"><?php echo $msg; ?></h2>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

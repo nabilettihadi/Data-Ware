@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $servername = "localhost";
-    private $database = "dataware_v3";
+    private $database = "dataware";
     private $username = "root";
     private $password = "";
     private $conn;

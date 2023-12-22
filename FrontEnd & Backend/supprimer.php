@@ -1,8 +1,8 @@
 <?php
 include "connexion.php";
-include "../src/delete-project.php";
-
-$projectManager = new ProjectManager($conn);
+include "../src/ProductOwner.php";
+session_start();
+$projectManager = new ProductOwner($conn, $_SESSION['usernamme']);
 
 $id = $_GET['id'];
 

@@ -1,40 +1,26 @@
 <?php
 include "connexion.php";
-include "../src/addTeam.php";
-
+include "../src/ScrumMaster.php";
 session_start();
-$membre = $_SESSION['id'];
+$message = "";
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 
-// Create an instance of TeamManager
-$teamManager = new TeamManager($conn);
-
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
-}
-
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->verifierAutorisation();
 if (isset($_POST["submit"])) {
-    // Retrieve form values
     $nom = $_POST["name"];
     $dated = $_POST["dated"];
 
-    // Use the TeamManager method to create a new team
-    $result = $teamManager->createTeam($nom, $dated, $membre);
-
-    if ($result) {
-        header("Location: DashboardScrum.php");
-    } else {
-        // Handle the error if needed
-    }
+    $scrumMaster->ajouterEquipe($name,$dated,$membre);
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -44,7 +30,7 @@ if (isset($_POST["submit"])) {
 </head>
 
 <body>
-<section class="vh-100" style="background-color: #6BA7F0;">
+    <section class="vh-100" style="background-color: #6BA7F0;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
@@ -83,6 +69,9 @@ if (isset($_POST["submit"])) {
                                         </div>
 
                                     </form>
+                                    <?php
+                                    $scrumMaster->afficherMessageErreur($message);
+                                    ?>
 
                                 </div>
                             </div>
@@ -92,6 +81,9 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
+
+
+
 </body>
 
 </html>

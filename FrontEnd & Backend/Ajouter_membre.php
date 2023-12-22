@@ -1,38 +1,23 @@
 <?php
-session_start();
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
-}
 include "connexion.php";
-include "../src/TeamMembersManager.php";
-
+include "../src/ScrumMaster.php";
+session_start();
+$message = "";
+$user= $_SESSION['username'];
+$membre= $_SESSION['id'];
 $id = $_GET['equipe_id'];
-
-// Create an instance of TeamMemberManager
-$teamMemberManager = new TeamMemberManager($conn);
-
+$scrumMaster = new ScrumMaster($conn, $user, $membre);
+$scrumMaster->verifierAutorisation();
 if (isset($_POST["submit"])) {
-    // Retrieve form values
     $selectedMembre = $_POST["membre"];
-
-    // Use the TeamMemberManager method to add the member to the team
-    $result = $teamMemberManager->addMemberToTeam($id, $selectedMembre);
-
-    if ($result) {
-        header("Location: Gestionequi.php");
-    } else {
-        // Handle the error if needed
-    }
-}
-
+    $scrumMaster->ajouterMembreQer($id,$selectedMembre);
+  }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -63,14 +48,9 @@ if (isset($_POST["submit"])) {
                                             membre </h5>
                                         <label for="cars" class="my-2 ">Sélectionnez un membre :</label>
                                         <select class="form-select" aria-label="Default select example" name="membre">
-                                            <?php
-
-                               $queryMembre = mysqli_query($conn, "SELECT id_user , First_name , Last_name FROM users WHERE id_equip IS NULL AND role ='user';");
-                                while ($membre = mysqli_fetch_assoc($queryMembre)) {
-                                  echo "<option value='{$membre['id_user']}'>{$membre['First_name']} {$membre['Last_name']}</option>";
-                             }
-                             ?>
-
+                                        <?php
+                                        $scrumMaster->ajouterMembre($membre);
+                                        ?>
                                         </select>
 
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
@@ -79,6 +59,9 @@ if (isset($_POST["submit"])) {
                                         </div>
 
                                     </form>
+                                    <?php
+                                    $scrumMaster->afficherMessageErreur($message);
+                                    ?>
 
                                 </div>
                             </div>
@@ -88,6 +71,9 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
+
+
+
 </body>
 
 </html>
