@@ -1,29 +1,24 @@
 <?php
 session_start();
-if ($_SESSION['autoriser'] != "oui") {
-    header("Location: index.php");
-    exit();
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
 }
+require_once "../src/ProductOwner.php";
+  $ProductOwner = new ProductOwner();
+  $id = $_GET['id'];
+  $projet = $ProductOwner->getProjetById($id);
 
-include "connexion.php";
-include "../src/ProductOwner.php";
-
-$projectManager = new ProductOwner($conn,$_SESSION['username']);
-
-$id = $_GET['id'];
-$row = $projectManager->getProjectById($id);
 
 if (isset($_POST["submit"])) {
-    // Récupérer les valeurs du formulaire
-    $name = $_POST["name"];
-    $dateStart = $_POST["dated"];
-    $dateEnd = $_POST["datef"];
+    $nom = $_POST["name"];
+    $dated = $_POST["dated"];
+    $datef = $_POST["datef"];
     $status = $_POST["status"];
 
-    if ($projectManager->updateProject($id, $name, $dateStart, $dateEnd, $status)) {
-        header("Location: DashboardM.php");
-    }
+    $ProductOwner->updateProjet($id, $nom, $dated, $datef, $status); 
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,19 +56,22 @@ if (isset($_POST["submit"])) {
 
                                         <div class="form-floating mb-3">
                                             <input type="text" name="name" class="form-control" id="floatingInput"
-                                                value="<?=$row['nom_projet']?>" placeholder="name" required>
+                                                value="<?php echo $projet->getNomProjet(); ?>" placeholder="name"
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Nom du projet</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="date" name="dated" class="form-control" id="floatingInput"
-                                                value="<?=$row['date_debut']?>" placeholder="last" required>
+                                                value="<?php echo $projet->getDateDebut(); ?>" placeholder="last"
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Date début</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="date" name="datef" class="form-control" id="floatingInput"
-                                                value="<?=$row['date_fin']?>" placeholder="last" required>
+                                                value="<?php echo $projet->getDateFin(); ?>" placeholder="last"
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Date fin</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
@@ -99,6 +97,8 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
+
+
 
 </body>
 

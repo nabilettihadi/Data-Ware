@@ -1,16 +1,16 @@
 <?php
-include "connexion.php";
-include "../src/user.php";
-include "../src/Membre.php";
 session_start();
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
+}
+require_once "../src/User.php";
 $user= $_SESSION['username'];
 $membre= $_SESSION['id'];
-$message="";
+$affiche = new User();
+$projects = $affiche->afficheProjet($membre);
 
-$membreObj = new Membre($conn, $user, $membre);
-$membreObj->verifierAutorisation();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,9 +38,6 @@ $membreObj->verifierAutorisation();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex gap-5">
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="community.php">Community</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-center" href="DashboardUser.php">Mes équipes</a>
                         </li>
                         <li class="nav-item">
@@ -54,10 +51,7 @@ $membreObj->verifierAutorisation();
                 </div>
             </div>
         </nav>
-    </header>
-    <?php
-    $membreObj->afficherBienvenue();
-    ?>
+        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
 
         <h1 class="d-flex justify-content-center mt-5 mb-5"> Mes Projets </h1>
         <div class="container mt-4">
@@ -74,16 +68,26 @@ $membreObj->verifierAutorisation();
                                 </tr>
                             </thead>
                             <?php
-                                $membreObj->afficherProjets($membre);
-                            ?>
+             foreach($projects as $projet){
+                ?>
+                            <tbody class="table-light ">
+                                <tr>
+                                    <td><?= $projet->getNomProjet();?></td>
+                                    <td><?= $projet->getDateDebut();?></td>
+                                    <td><?= $projet->getDateFin();?></td>
+                                    <td><?= $projet->getStatusProjet();?></td>
+                                </tr>
+                            </tbody>
+
+                            <?php
+              }
+             
+             ?>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <?php
-        $membreObj->afficherMessageErreur($message);
-        ?>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 

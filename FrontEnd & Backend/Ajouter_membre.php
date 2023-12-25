@@ -1,17 +1,23 @@
 <?php
-include "connexion.php";
-include "../src/ScrumMaster.php";
 session_start();
-$message = "";
-$user= $_SESSION['username'];
-$membre= $_SESSION['id'];
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
+}
+require_once "../src/ScrumMaster.php";
+
 $id = $_GET['equipe_id'];
-$scrumMaster = new ScrumMaster($conn, $user, $membre);
-$scrumMaster->verifierAutorisation();
+$Scrum = new ScrumMaster();
 if (isset($_POST["submit"])) {
-    $selectedMembre = $_POST["membre"];
-    $scrumMaster->ajouterMembreQer($id,$selectedMembre);
-  }
+  $selectedMembre = $_POST["membre"];
+
+$Scrum->addMember($id,$selectedMembre);
+}
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,9 +54,14 @@ if (isset($_POST["submit"])) {
                                             membre </h5>
                                         <label for="cars" class="my-2 ">Sélectionnez un membre :</label>
                                         <select class="form-select" aria-label="Default select example" name="membre">
-                                        <?php
-                                        $scrumMaster->ajouterMembre($membre);
-                                        ?>
+                                            <?php
+
+                               $users = $Scrum->getMembres();
+                               foreach ($users as $user){
+                                  echo "<option value='{$user['id_user']}'>{$user['First_name']} {$user['Last_name']}</option>";
+                             }
+                             ?>
+
                                         </select>
 
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
@@ -59,9 +70,6 @@ if (isset($_POST["submit"])) {
                                         </div>
 
                                     </form>
-                                    <?php
-                                    $scrumMaster->afficherMessageErreur($message);
-                                    ?>
 
                                 </div>
                             </div>

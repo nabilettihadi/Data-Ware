@@ -1,21 +1,22 @@
 <?php
-include "connexion.php";
-include "../src/ScrumMaster.php";
 session_start();
-$message = "";
-$user= $_SESSION['username'];
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
+}
+require_once "../src/ScrumMaster.php";
 $membre= $_SESSION['id'];
 
-$scrumMaster = new ScrumMaster($conn, $user, $membre);
-$scrumMaster->verifierAutorisation();
+$ajouter = new ScrumMaster();
 if (isset($_POST["submit"])) {
     $nom = $_POST["name"];
     $dated = $_POST["dated"];
 
-    $scrumMaster->ajouterEquipe($name,$dated,$membre);
-}
-?>
+    $ajouter->createEquipe($nom, $dated,$membre); 
 
+  }
+ 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,9 +70,6 @@ if (isset($_POST["submit"])) {
                                         </div>
 
                                     </form>
-                                    <?php
-                                    $scrumMaster->afficherMessageErreur($message);
-                                    ?>
 
                                 </div>
                             </div>

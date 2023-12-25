@@ -1,12 +1,8 @@
 <?php
-include "connexion.php";
-include "../src/ScrumMaster.php";
-session_start();
-$user= $_SESSION['username'];
-$membre= $_SESSION['id'];
-$membre_id = $_GET['membre_id'];
+require_once "../src/ScrumMaster.php";
 
-$scrumMaster = new ScrumMaster($conn, $user, $membre);
-$scrumMaster->supprimerMembre($scrumMaster);
+$membre_id = $_GET['membre_id'];
+$delete= new ScrumMaster();
+$delete->deleteMember($membre_id);
 
 ?>

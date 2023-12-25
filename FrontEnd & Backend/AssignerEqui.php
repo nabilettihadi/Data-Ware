@@ -1,21 +1,32 @@
 <?php
-include "connexion.php";
-include "../src/ScrumMaster.php";
 session_start();
-$message = "";
-$user= $_SESSION['username'];
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
+}
+require_once "../src/ScrumMaster.php";
+require_once "../src/ProductOwner.php";
+
+
 $membre= $_SESSION['id'];
+$Scrum = new ScrumMaster();
+$projet = new ProductOwner();
+$equipes = $Scrum->displayEquipe($membre);
+$projects = $projet->getAllProjects();
 
-$scrumMaster = new ScrumMaster($conn, $user, $membre);
-$scrumMaster->verifierAutorisation();
 if (isset($_POST["submit"])) {
-    // Récupérer les valeurs du formulaire
-    $selectedEquipe = $_POST["equipe"];
-    $selectedProjet = $_POST["projet"];
-    $scrumMaster->assignationProjets($selectedEquipe,$selectedProjet);
-  }
-?>
+  // Récupérer les valeurs du formulaire
+  $equipe = $_POST["equipe"];
+  $projet = $_POST["projet"];
 
+ $Scrum->assignerEqui($equipe,$projet);
+}
+
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,14 +55,35 @@ if (isset($_POST["submit"])) {
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body text-black">
 
-                                    
-                                            <?php
-                                            $scrumMaster->assignationEquipes($membre);
-                                            ?>
+                                    <form method="post" action="">
 
-                                    <?php
-                                    $scrumMaster->afficherMessageErreur($message);
-                                    ?>
+
+                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Affecter une
+                                            équipe à un projet</h5>
+                                        <label for="cars" class="my-2 ">Sélectionnez Equipe :</label>
+                                        <select class="form-select" aria-label="Default select example" name="equipe">
+                                            <?php
+
+                               foreach ($equipes as $equipe){
+                               echo "<option value='{$equipe->getIdEquipe()}'>{$equipe->getNameEquipe()}</option>";
+                             }
+                             ?>
+                                        </select>
+
+                                        <label for="cars" class="my-2">Sélectionnez le projets :</label>
+                                        <select class="form-select" aria-label="Default select example" name="projet">
+                                            <?php
+                            foreach ($projects as $projet) {
+                           echo "<option value='{$projet->getIdProjets()}'>{$projet->getNomProjet()}</option>";
+                          }
+                           ?>
+                                        </select>
+                                        <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
+                                            <button class="btn btn-primary btn-lg btn-block" type="submit"
+                                                name="submit">Valider</button>
+                                        </div>
+
+                                    </form>
 
                                 </div>
                             </div>
@@ -61,6 +93,8 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
+
+
 
 </body>
 

@@ -1,18 +1,32 @@
 <?php
 session_start();
-include "connexion.php";
-include "../src/user.php";
+if (isset($_SESSION['autoriser']) && $_SESSION['autoriser'] == "oui") {
+    // The session is authorized
 
-$authentification = new User($conn, "", 0, "");
+    if ($_SESSION['role'] == 'user') {
+        header("Location: DashboardUser.php");
+        exit();
+    } elseif ($_SESSION['role'] == 'scrum_master') {
+        header("Location: DashboardScrum.php");
+        exit();
+    } else {
+        header("Location: DashboardM.php");
+        exit();
+    }
+}
+require_once "../src/Personne.php";
 
-$erreur = "";
+
+$authentification = new Personne();
+
+
 if (isset($_POST["submit"])) {
     $email = $_POST["email"];
-    $pass = $_POST["password"];
-    $authentification->authenticate($email, $pass);
+    $mot_de_passe = $_POST["password"];  
+    $authentification->authentifierUtilisateur($email, $mot_de_passe);
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,18 +70,19 @@ if (isset($_POST["submit"])) {
                                         <div class="form-floating mb-4 ">
                                             <input type="password" class="form-control" name="password"
                                                 id="floatingPassword" placeholder="Password">
-                                            <label for="floatingPassword" class="text-secondary">Mot de
-                                                passe</label>
-                                            <span class=" text-danger "><?php echo $erreur; ?></span>
+                                            <label for="floatingPassword" class="text-secondary">Mot de passe</label>
+                                            <span
+                                                class=" text-danger "><?php  echo  $authentification->error  ;?></span>
                                         </div>
 
                                         <div class="pt-1 mb-4 d-flex justify-content-end">
-                                            <button class="btn btn-primary btn-lg btn-block" name="submit"
-                                                type="submit">Connexion</button>
+                                            <button class="btn btn-primary btn-lg btn-block" type="submit"
+                                                name="submit">Connexion</button>
                                         </div>
 
-                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Vous n'avez pas de compte ? <a
-                                                href="Inscription.php" style="color: #393f81;">Inscrivez-vous ici</a>
+                                        <p class=" mb-5 pb-lg-2" style="color: #393f81;">Vous n'avez pas de compte ? <a
+                                                href="Inscription.php" style="color: #393f81;">Inscrivez-vous
+                                                ici</a>
                                         </p>
                                     </form>
 
@@ -80,7 +95,7 @@ if (isset($_POST["submit"])) {
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

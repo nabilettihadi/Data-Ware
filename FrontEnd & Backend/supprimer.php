@@ -1,12 +1,16 @@
 <?php
-include "connexion.php";
-include "../src/ProductOwner.php";
 session_start();
-$projectManager = new ProductOwner($conn, $_SESSION['usernamme']);
-
-$id = $_GET['id'];
-
-if ($projectManager->deleteProject($id)) {
-    header("Location: DashboardM.php");
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
 }
+require_once "../src/ProductOwner.php";
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $supprimer = new ProductOwner();
+    $supprimer->deleteProjetById($id);
+}
+
+
 ?>

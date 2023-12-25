@@ -1,158 +1,61 @@
 <?php
-class User
-{
-    private $conn;
-    private $username;
-    private $id;
-    private $role;
-    public $erreur_nom;
-    public $erreur_prenom;
-    public $erreur_email;
-    public $erreur_mot_de_passe;
+require_once "Personne.php";
+require_once "Projet.php";
+require_once "Equipe.php";
 
-    public function __construct($conn, $username, $id, $role)
-    {
-        $this->conn = $conn;
-        $this->username = $username;
-        $this->id = $id;
-        $this->role = $role;
-        $this->conn = $conn;
-        $this->erreur_nom = "";
-        $this->erreur_prenom = "";
-        $this->erreur_email = "";
-        $this->erreur_mot_de_passe = "";
-    }
+class  User extends Personne{
 
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    public function authorize($requiredRole)
-    {
-        if ($_SESSION['autoriser'] !== "oui" || $this->role !== $requiredRole) {
-            header("Location: index.php");
-            exit();
-        }
-    }
-
-    public function authenticate($email, $password)
-    {
-        $select = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-        $query = mysqli_query($this->conn, $select);
-        $row = mysqli_num_rows($query);
-        $fetch = mysqli_fetch_array($query);
-
-        if ($row == 1) {
-            $this->initializeSession($fetch);
-            $this->redirectDashboard($fetch['role']);
+    public function afficheEquipe($membre) {
+        $equipes = [];
+    
+        $stmt = $this->db->prepare("SELECT * FROM equipes INNER JOIN users ON equipes.id_equipe = users.id_equip  WHERE id_user=:membre");
+        $stmt->bindParam(':membre', $membre, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        if ($stmt->rowCount() == 0) {
+            echo "Il n'y a pas encore d'equipe.";
         } else {
-            // You might want to handle the error differently, like setting an error message.
-            echo "Authentication failed.";
-        }
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $equipe = new Equipe(
+                    $row['Name_equipe'],
+                    $row['date_creation'],
+                    $row['id_equipe'],
+                    $row['Last_name']
+                );
+                $equipes[] = $equipe;
+            }
+        }   
+        return $equipes;
     }
 
-    public function initializeSession($fetch)
-    {
-        $_SESSION['username'] = $fetch['last_name'];
-        $_SESSION['id'] = $fetch['id_user'];
-        $_SESSION['role'] = $fetch['role'];
-        $_SESSION['autoriser'] = "oui";
-    }
-
-    public function redirectDashboard($role)
-    {
-        if ($role == "user") {
-            header("Location: DashboardUser.php");
-        } elseif ($role == "scrum_master") {
-            header("Location: DashboardScrum.php");
+    public function afficheProjet($membre) {
+        $projects = [];
+    
+        $stmt = $this->db->prepare("SELECT * FROM projets INNER JOIN equipes ON projets.equipe_id = equipes.id_equipe INNER JOIN users ON equipes.id_equipe = users.id_equip  WHERE id_user= :membre ");
+        $stmt->bindParam(':membre', $membre, PDO::PARAM_INT);
+        $stmt->execute();
+    
+    
+        if ($stmt->rowCount() == 0) {
+            echo "Il n'y a pas encore de projets.";
         } else {
-            header("Location: DashboardM.php");
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $project = new Projet(
+                    $row['nom_projet'],
+                    $row['date_debut'],
+                    $row['date_fin'],
+                    $row['status_projet'],
+                    $row['Last_name'],
+                    $row['id_projets'],
+                    $row['equipe_id']
+                );
+                $projects[] = $project;
+            }
         }
-        exit();
+    
+        return $projects;
     }
-
-    public function registerUser($nom, $prenom, $email, $mot_de_passe)
-    {
-        $this->validateForm($nom, $prenom, $email, $mot_de_passe);
-
-        if (empty($this->erreur_nom) && empty($this->erreur_prenom) && empty($this->erreur_email) && empty($this->erreur_mot_de_passe)) {
-            $this->insertUser($nom, $prenom, $email, $mot_de_passe);
-            header("Location: validation.php");
-            exit();
-        }
-    }
-
-    public function validateForm($nom, $prenom, $email, $mot_de_passe)
-    {
-        $this->validateNom($nom);
-        $this->validatePrenom($prenom);
-        $this->validateEmail($email);
-        $this->validateMotDePasse($mot_de_passe);
-    }
-
-    public function validateNom($nom)
-    {
-        $pattern_nom_prenom = '/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]{3,}$/u';
-
-        if (!preg_match($pattern_nom_prenom, $nom)) {
-            $this->erreur_nom = "Veuillez entrer un nom valide (au moins 3 caractères)";
-        }
-    }
-
-    public function validatePrenom($prenom)
-    {
-        $pattern_nom_prenom = '/^[a-zA-ZÀ-ÖØ-öø-ÿ\s]{3,}$/u';
-
-        if (!preg_match($pattern_nom_prenom, $prenom)) {
-            $this->erreur_prenom = "Veuillez entrer un prénom valide (au moins 3 caractères)";
-        }
-    }
-
-    public function validateEmail($email)
-    {
-        $pattern_email = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
-
-        if (!preg_match($pattern_email, $email)) {
-            $this->erreur_email = "Veuillez entrer une adresse e-mail valide.";
-        }
-
-        $user = "SELECT * FROM users WHERE email = '$email'";
-        $result = mysqli_query($this->conn, $user);
-
-        if (mysqli_num_rows($result) > 0) {
-            $this->erreur_email = "Email déjà utilisé";
-        }
-    }
-
-    public function validateMotDePasse($mot_de_passe)
-    {
-        $pattern_mot_de_passe = '/^.{8,}$/';
-
-        if (!preg_match($pattern_mot_de_passe, $mot_de_passe)) {
-            $this->erreur_mot_de_passe = "Veuillez entrer un mot de passe valide (au moins 8 caractères)";
-        }
-    }
-
-    public function insertUser($nom, $prenom, $email, $mot_de_passe)
-    {
-        $requete = "INSERT INTO users (last_name, first_name, email, password) VALUES ('$nom', '$prenom', '$email', '$mot_de_passe')";
-        $query = mysqli_query($this->conn, $requete);
-    }
-    public function redirect($location)
-    {
-        header("Location: $location");
-        exit();
-    }
+    
 }
+
 ?>

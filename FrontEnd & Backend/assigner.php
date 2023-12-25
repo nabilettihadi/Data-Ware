@@ -1,29 +1,28 @@
 <?php
-include "connexion.php";
-include "../src/ProductOwner.php";
 session_start();
 if($_SESSION['autoriser'] != "oui"){
   header("Location: index.php");
   exit();
 }
-if($_SESSION['role'] != "product_owner"){
-  header("Location: community.php");
-  exit();
+require_once "../src/ProductOwner.php";
 
-}
+$affiche = new ProductOwner();
+$projects = $affiche->getAllProjects();
+$Scrums = $affiche->getAllScrumMaster();
+
 
 if (isset($_POST["submit"])) {
-    // Récupérer les valeurs du formulaire
-    $selectedProject = $_POST["projet"];
-    $selectedScrumMaster = $_POST["scrumMaster"];
+  $selectedProject = $_POST["projet"];
+  $selectedScrumMaster = $_POST["scrumMaster"];
   
-    $productOwner = new ProductOwner($conn, $_SESSION['username']);
-    $productOwner->Assination($selectedProject, $selectedScrumMaster);
-  }
+  
+ $assigner = $affiche->updateScrumMaster($selectedProject, $selectedScrumMaster);
+}
+
+
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,12 +59,10 @@ if (isset($_POST["submit"])) {
                                         <label for="cars" class="my-2 ">Sélectionnez le Projet :</label>
                                         <select class="form-select" aria-label="Default select example" name="projet">
                                             <?php
-
-                               $queryProjects = mysqli_query($conn, "SELECT id_projets, nom_projet FROM projets ;");
-                                while ($project = mysqli_fetch_assoc($queryProjects)) {
-                               echo "<option value='{$project['id_projets']}'>{$project['nom_projet']}</option>";
-                             }
-                             ?>
+                                                 foreach ($projects as $project) {
+                                                  echo "<option value='{$project->getIdProjets()}'>{$project->getNomProjet()}</option>";
+                                                  }
+                                             ?>
 
                                         </select>
 
@@ -73,11 +70,12 @@ if (isset($_POST["submit"])) {
                                         <select class="form-select" aria-label="Default select example"
                                             name="scrumMaster">
                                             <?php
-                            $queryScrumMasters = mysqli_query($conn, "SELECT id_user, Last_name FROM users WHERE role = 'scrum_master'");
-                            while ($scrumMaster = mysqli_fetch_assoc($queryScrumMasters)) {
-                           echo "<option value='{$scrumMaster['id_user']}'>{$scrumMaster['Last_name']}</option>";
-                          }
-                           ?>
+                                                 foreach ($Scrums as $Scrum) {
+                                                ?>
+                                            <option value='<?=$Scrum["id_user"]?>'>
+                                                <?=$Scrum["Last_name"]?>
+                                            </option>
+                                            <?php } ?>
                                         </select>
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
                                             <button class="btn btn-primary btn-lg btn-block" type="submit"

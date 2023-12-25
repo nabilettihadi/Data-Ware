@@ -31,7 +31,7 @@
   height: 3.5rem;
 }
 body{
-    background-color:  #f0ebf8;
+    background-color:  #ffffff;
 }
 .blockquote-custom-icon {
   width: 50px;
@@ -44,37 +44,3 @@ body{
   top: -40px;
   left: 19px;
 }
-.like:hover{
-  font-size: 17px;
-  color: #198754;
-}
-.dislike:hover{
-  font-size: 17px;
-  color: #DC3545;
-}
-.bg{
-  background-color: #e9ecef !important;
-}
-.bg1{
-  background-color: #b2c9ed;
-}
-.h-80{
-  height: 200px !important;
-}
-@media screen and (min-width: 1200px) {
-  .w{
-    width: 700px !important;
-   }
-   .w1{
-    width: 600px !important;
-   }
-  }
-
-  @media screen and (max-width: 767px) {
-    .fs{
-      font-size: 10px !important;
-    }
-    .w5{
-      width: 350px !important;
-    }
-  }

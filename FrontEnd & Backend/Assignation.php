@@ -1,13 +1,16 @@
 <?php
-include "connexion.php";
-include "../src/ScrumMaster.php";
 session_start();
-$message = "";
 $user= $_SESSION['username'];
 $membre= $_SESSION['id'];
+require_once "../src/ScrumMaster.php";
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
+}
+$display = new ScrumMaster();
+$projets = $display-> displayProjEqui();
 
-$scrumMaster = new ScrumMaster($conn, $user, $membre);
-$scrumMaster->verifierAutorisation();
+
 
 ?>
 <!DOCTYPE html>
@@ -36,9 +39,6 @@ $scrumMaster->verifierAutorisation();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex gap-5">
-                        <li class="nav-item text-center">
-                            <a class="nav-link" href="community.php">Community</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-center" href="DashboardScrum.php">Equipes</a>
                         </li>
@@ -56,9 +56,7 @@ $scrumMaster->verifierAutorisation();
                 </div>
             </div>
         </nav>
-        <?php
-        $scrumMaster->afficherBienvenue();
-        ?>
+        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
         <h1 class="d-flex justify-content-center mt-5"> Projets / Equipes </h1>
 
         <div class="container mt-4">
@@ -77,16 +75,25 @@ $scrumMaster->verifierAutorisation();
                             </tr>
                         </thead>
                         <?php
-                        $scrumMaster->assignationEquipesPage($membre);
-                        ?>
+          foreach($projets as $projets){
+                ?>
+                        <tbody class="table-light ">
+                            <tr>
+                                <td><?= $projets->getNomProjet();?></td>
+                                <td><?= $projets->getEquipeId();?></td>
+
+                            </tr>
+                        </tbody>
+
+                        <?php
+              }
+             
+             ?>
                     </table>
                 </div>
             </div>
         </div>
         </div>
-        <?php
-        $scrumMaster->afficherMessageErreur($message);
-        ?>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

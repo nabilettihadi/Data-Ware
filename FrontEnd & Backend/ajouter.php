@@ -1,21 +1,27 @@
 <?php
-include "connexion.php";
-include "../src/ProductOwner.php";
 session_start();
-if (isset($_POST["submit"])) {
-    // Récupérer les valeurs du formulaire
-    $nom = $_POST["name"];
-    $dated = $_POST["dated"];
-    $datef = $_POST["datef"];
-    $status = $_POST["statuss"];
+if($_SESSION['autoriser'] != "oui"){
+  header("Location: index.php");
+  exit();
+}
+require_once "../src/ProductOwner.php";
 
-    $productOwner = new ProductOwner($conn, $_SESSION['username']);
-    $productOwner->createProject($nom, $dated, $datef, $status);
-  }
+$ajouter = new ProductOwner();
+
+
+if (isset($_POST["submit"])) {
+  $nom = $_POST["name"];
+  $dated = $_POST["dated"];
+  $datef = $_POST["datef"];
+  $status = $_POST["statuss"];
+
+  $ajouter->createProjet($nom, $dated, $datef, $status); 
+}
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,5 +94,8 @@ if (isset($_POST["submit"])) {
         </div>
     </section>
 
+
+
 </body>
+
 </html>
