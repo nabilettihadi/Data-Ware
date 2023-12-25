@@ -1,17 +1,14 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
+if ($_SESSION['autoriser'] != "oui") {
   header("Location: index.php");
   exit();
 }
 require_once "../src/ScrumMaster.php";
-$membre= $_SESSION['id'];
-$id=$_GET['id'];
+$membre = $_SESSION['id'];
+$id = $_GET['id'];
 
-$delete= new ScrumMaster();
-$delete->deleteEquipeById($id,$membre);
-
-
-
+$delete = new ScrumMaster();
+$delete->deleteEquipeById($id, $membre);
 
 ?>

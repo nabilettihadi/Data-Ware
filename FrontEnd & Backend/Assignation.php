@@ -1,18 +1,16 @@
 <?php
 session_start();
-$user= $_SESSION['username'];
-$membre= $_SESSION['id'];
+$user = $_SESSION['username'];
+$membre = $_SESSION['id'];
 require_once "../src/ScrumMaster.php";
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 $display = new ScrumMaster();
-$projets = $display-> displayProjEqui();
-
-
-
+$projets = $display->displayProjEqui();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,7 +54,9 @@ $projets = $display-> displayProjEqui();
                 </div>
             </div>
         </nav>
-        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
+        <h5 class="mt-2 ms-2">Bienvenue
+            <?php echo $user; ?> !
+        </h5>
         <h1 class="d-flex justify-content-center mt-5"> Projets / Equipes </h1>
 
         <div class="container mt-4">
@@ -75,27 +75,30 @@ $projets = $display-> displayProjEqui();
                             </tr>
                         </thead>
                         <?php
-          foreach($projets as $projets){
-                ?>
-                        <tbody class="table-light ">
-                            <tr>
-                                <td><?= $projets->getNomProjet();?></td>
-                                <td><?= $projets->getEquipeId();?></td>
+                        foreach ($projets as $projets) {
+                            ?>
+                            <tbody class="table-light ">
+                                <tr>
+                                    <td>
+                                        <?= $projets->getNomProjet(); ?>
+                                    </td>
+                                    <td>
+                                        <?= $projets->getEquipeId(); ?>
+                                    </td>
 
-                            </tr>
-                        </tbody>
+                                </tr>
+                            </tbody>
 
-                        <?php
-              }
-             
-             ?>
+                            <?php
+                        }
+
+                        ?>
                     </table>
                 </div>
             </div>
         </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

@@ -1,24 +1,24 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ProductOwner.php";
 
 $ajouter = new ProductOwner();
 
-
 if (isset($_POST["submit"])) {
-  $nom = $_POST["name"];
-  $dated = $_POST["dated"];
-  $datef = $_POST["datef"];
-  $status = $_POST["statuss"];
+    $nom = $_POST["name"];
+    $dated = $_POST["dated"];
+    $datef = $_POST["datef"];
+    $status = $_POST["statuss"];
 
-  $ajouter->createProjet($nom, $dated, $datef, $status); 
+    $ajouter->createProjet($nom, $dated, $datef, $status);
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,9 +93,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

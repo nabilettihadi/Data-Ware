@@ -1,13 +1,13 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ProductOwner.php";
 $id = $_GET['id'];
 $user = new ProductOwner();
-$users= $user->getUserById($id);
+$users = $user->getUserById($id);
 
 
 if (isset($_POST["submit"])) {
@@ -15,12 +15,9 @@ if (isset($_POST["submit"])) {
 
     $user->updateRole($id, $role);
 
-  }
-
-
-
-
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,13 +53,14 @@ if (isset($_POST["submit"])) {
                                             role</h5>
                                         <div class="form-floating mb-3">
                                             <input type="text" name="nom" class="form-control" id="floatingInput"
-                                                value="<?=$users['Last_name']?>" placeholder="name" readonly required>
+                                                value="<?= $users['Last_name'] ?>" placeholder="name" readonly required>
                                             <label class="text-secondary" for="floatingInput">Nom</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="text" name="prenom" class="form-control" id="floatingInput"
-                                                value="<?=$users['First_name']?>" placeholder="last" readonly required>
+                                                value="<?= $users['First_name'] ?>" placeholder="last" readonly
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Prénom</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
@@ -89,9 +87,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

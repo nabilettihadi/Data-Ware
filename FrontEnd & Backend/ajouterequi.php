@@ -1,22 +1,23 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ScrumMaster.php";
-$membre= $_SESSION['id'];
+$membre = $_SESSION['id'];
 
 $ajouter = new ScrumMaster();
 if (isset($_POST["submit"])) {
     $nom = $_POST["name"];
     $dated = $_POST["dated"];
 
-    $ajouter->createEquipe($nom, $dated,$membre); 
+    $ajouter->createEquipe($nom, $dated, $membre);
 
-  }
- 
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,9 +80,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

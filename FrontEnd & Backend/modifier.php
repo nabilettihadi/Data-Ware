@@ -1,25 +1,23 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ProductOwner.php";
-  $ProductOwner = new ProductOwner();
-  $id = $_GET['id'];
-  $projet = $ProductOwner->getProjetById($id);
-
-
+$ProductOwner = new ProductOwner();
+$id = $_GET['id'];
+$projet = $ProductOwner->getProjetById($id);
 if (isset($_POST["submit"])) {
     $nom = $_POST["name"];
     $dated = $_POST["dated"];
     $datef = $_POST["datef"];
     $status = $_POST["status"];
 
-    $ProductOwner->updateProjet($id, $nom, $dated, $datef, $status); 
+    $ProductOwner->updateProjet($id, $nom, $dated, $datef, $status);
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -97,9 +95,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

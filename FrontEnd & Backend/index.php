@@ -1,7 +1,6 @@
 <?php
 session_start();
 if (isset($_SESSION['autoriser']) && $_SESSION['autoriser'] == "oui") {
-    // The session is authorized
 
     if ($_SESSION['role'] == 'user') {
         header("Location: DashboardUser.php");
@@ -22,7 +21,7 @@ $authentification = new Personne();
 
 if (isset($_POST["submit"])) {
     $email = $_POST["email"];
-    $mot_de_passe = $_POST["password"];  
+    $mot_de_passe = $_POST["password"];
     $authentification->authentifierUtilisateur($email, $mot_de_passe);
 }
 
@@ -71,8 +70,9 @@ if (isset($_POST["submit"])) {
                                             <input type="password" class="form-control" name="password"
                                                 id="floatingPassword" placeholder="Password">
                                             <label for="floatingPassword" class="text-secondary">Mot de passe</label>
-                                            <span
-                                                class=" text-danger "><?php  echo  $authentification->error  ;?></span>
+                                            <span class=" text-danger ">
+                                                <?php echo $authentification->error; ?>
+                                            </span>
                                         </div>
 
                                         <div class="pt-1 mb-4 d-flex justify-content-end">
@@ -94,8 +94,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
 </body>
 
 </html>

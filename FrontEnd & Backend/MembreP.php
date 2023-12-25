@@ -1,14 +1,15 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ProductOwner.php";
-$user= $_SESSION['username'];
+$user = $_SESSION['username'];
 $productOwner = new ProductOwner();
 $users = $productOwner->getUsersWithRole();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,8 +53,10 @@ $users = $productOwner->getUsersWithRole();
                 </div>
             </div>
         </nav>
-        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
-        <!-- Navbar -->
+        <h5 class="mt-2 ms-2">Bienvenue
+            <?php echo $user; ?> !
+        </h5>
+  
         <h1 class="d-flex justify-content-center mt-5"> Gestion du Membres </h1>
 
         <div class="container mt-4">
@@ -71,33 +74,40 @@ $users = $productOwner->getUsersWithRole();
                                 </tr>
                             </thead>
                             <?php
-                              foreach ($users as $user) {
-           
-                ?>
-                            <tbody class="table-light ">
-                                <tr>
-                                    <td><?= $user['Last_name'];?></td>
-                                    <td><?php echo $user['First_name'];?></td>
-                                    <td><?php echo $user['email'];?></td>
-                                    <td><?php echo $user['role'];?></td>
-                                    <td><a href="modifierRole.php?id=<?=$user['id_user']?>" class="ms-5"><i
-                                                class="bi bi-pencil"></i></a></th>
+                            foreach ($users as $user) {
+
+                                ?>
+                                <tbody class="table-light ">
+                                    <tr>
+                                        <td>
+                                            <?= $user['Last_name']; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $user['First_name']; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $user['email']; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $user['role']; ?>
+                                        </td>
+                                        <td><a href="modifierRole.php?id=<?= $user['id_user'] ?>" class="ms-5"><i
+                                                    class="bi bi-pencil"></i></a></th>
 
 
-                                </tr>
-                            </tbody>
-                            <?php
-                           }  ?>
+                                    </tr>
+                                </tbody>
+                                <?php
+                            } ?>
 
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <p class="text-center fs-5 fw-bolder text-danger"><?php echo $message;?></p> -->
+        <!-- <p class="text-center fs-5 fw-bolder text-danger"><?php echo $message; ?></p> -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

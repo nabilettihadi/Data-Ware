@@ -1,8 +1,8 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ProductOwner.php";
 
@@ -10,19 +10,13 @@ $affiche = new ProductOwner();
 $projects = $affiche->getAllProjects();
 $Scrums = $affiche->getAllScrumMaster();
 
-
 if (isset($_POST["submit"])) {
-  $selectedProject = $_POST["projet"];
-  $selectedScrumMaster = $_POST["scrumMaster"];
-  
-  
- $assigner = $affiche->updateScrumMaster($selectedProject, $selectedScrumMaster);
+    $selectedProject = $_POST["projet"];
+    $selectedScrumMaster = $_POST["scrumMaster"];
+    $assigner = $affiche->updateScrumMaster($selectedProject, $selectedScrumMaster);
 }
-
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,10 +53,10 @@ if (isset($_POST["submit"])) {
                                         <label for="cars" class="my-2 ">Sélectionnez le Projet :</label>
                                         <select class="form-select" aria-label="Default select example" name="projet">
                                             <?php
-                                                 foreach ($projects as $project) {
-                                                  echo "<option value='{$project->getIdProjets()}'>{$project->getNomProjet()}</option>";
-                                                  }
-                                             ?>
+                                            foreach ($projects as $project) {
+                                                echo "<option value='{$project->getIdProjets()}'>{$project->getNomProjet()}</option>";
+                                            }
+                                            ?>
 
                                         </select>
 
@@ -70,11 +64,11 @@ if (isset($_POST["submit"])) {
                                         <select class="form-select" aria-label="Default select example"
                                             name="scrumMaster">
                                             <?php
-                                                 foreach ($Scrums as $Scrum) {
+                                            foreach ($Scrums as $Scrum) {
                                                 ?>
-                                            <option value='<?=$Scrum["id_user"]?>'>
-                                                <?=$Scrum["Last_name"]?>
-                                            </option>
+                                                <option value='<?= $Scrum["id_user"] ?>'>
+                                                    <?= $Scrum["Last_name"] ?>
+                                                </option>
                                             <?php } ?>
                                         </select>
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
@@ -92,9 +86,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

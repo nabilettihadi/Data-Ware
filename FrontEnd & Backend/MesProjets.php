@@ -1,12 +1,12 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/User.php";
-$user= $_SESSION['username'];
-$membre= $_SESSION['id'];
+$user = $_SESSION['username'];
+$membre = $_SESSION['id'];
 $affiche = new User();
 $projects = $affiche->afficheProjet($membre);
 
@@ -51,7 +51,9 @@ $projects = $affiche->afficheProjet($membre);
                 </div>
             </div>
         </nav>
-        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
+        <h5 class="mt-2 ms-2">Bienvenue
+            <?php echo $user; ?> !
+        </h5>
 
         <h1 class="d-flex justify-content-center mt-5 mb-5"> Mes Projets </h1>
         <div class="container mt-4">
@@ -68,29 +70,35 @@ $projects = $affiche->afficheProjet($membre);
                                 </tr>
                             </thead>
                             <?php
-             foreach($projects as $projet){
-                ?>
-                            <tbody class="table-light ">
-                                <tr>
-                                    <td><?= $projet->getNomProjet();?></td>
-                                    <td><?= $projet->getDateDebut();?></td>
-                                    <td><?= $projet->getDateFin();?></td>
-                                    <td><?= $projet->getStatusProjet();?></td>
-                                </tr>
-                            </tbody>
+                            foreach ($projects as $projet) {
+                                ?>
+                                <tbody class="table-light ">
+                                    <tr>
+                                        <td>
+                                            <?= $projet->getNomProjet(); ?>
+                                        </td>
+                                        <td>
+                                            <?= $projet->getDateDebut(); ?>
+                                        </td>
+                                        <td>
+                                            <?= $projet->getDateFin(); ?>
+                                        </td>
+                                        <td>
+                                            <?= $projet->getStatusProjet(); ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
 
-                            <?php
-              }
-             
-             ?>
+                                <?php
+                            }
+
+                            ?>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
 </body>
 
 </html>

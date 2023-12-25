@@ -1,32 +1,27 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ScrumMaster.php";
 require_once "../src/ProductOwner.php";
 
-
-$membre= $_SESSION['id'];
+$membre = $_SESSION['id'];
 $Scrum = new ScrumMaster();
 $projet = new ProductOwner();
 $equipes = $Scrum->displayEquipe($membre);
 $projects = $projet->getAllProjects();
 
 if (isset($_POST["submit"])) {
-  // Récupérer les valeurs du formulaire
-  $equipe = $_POST["equipe"];
-  $projet = $_POST["projet"];
 
- $Scrum->assignerEqui($equipe,$projet);
+    $equipe = $_POST["equipe"];
+    $projet = $_POST["projet"];
+
+    $Scrum->assignerEqui($equipe, $projet);
 }
-
-
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,19 +59,19 @@ if (isset($_POST["submit"])) {
                                         <select class="form-select" aria-label="Default select example" name="equipe">
                                             <?php
 
-                               foreach ($equipes as $equipe){
-                               echo "<option value='{$equipe->getIdEquipe()}'>{$equipe->getNameEquipe()}</option>";
-                             }
-                             ?>
+                                            foreach ($equipes as $equipe) {
+                                                echo "<option value='{$equipe->getIdEquipe()}'>{$equipe->getNameEquipe()}</option>";
+                                            }
+                                            ?>
                                         </select>
 
                                         <label for="cars" class="my-2">Sélectionnez le projets :</label>
                                         <select class="form-select" aria-label="Default select example" name="projet">
                                             <?php
-                            foreach ($projects as $projet) {
-                           echo "<option value='{$projet->getIdProjets()}'>{$projet->getNomProjet()}</option>";
-                          }
-                           ?>
+                                            foreach ($projects as $projet) {
+                                                echo "<option value='{$projet->getIdProjets()}'>{$projet->getNomProjet()}</option>";
+                                            }
+                                            ?>
                                         </select>
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
                                             <button class="btn btn-primary btn-lg btn-block" type="submit"
@@ -93,9 +88,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

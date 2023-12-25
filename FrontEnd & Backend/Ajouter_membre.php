@@ -1,24 +1,20 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ScrumMaster.php";
 
 $id = $_GET['equipe_id'];
 $Scrum = new ScrumMaster();
 if (isset($_POST["submit"])) {
-  $selectedMembre = $_POST["membre"];
+    $selectedMembre = $_POST["membre"];
 
-$Scrum->addMember($id,$selectedMembre);
+    $Scrum->addMember($id, $selectedMembre);
 }
-
-
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,11 +52,11 @@ $Scrum->addMember($id,$selectedMembre);
                                         <select class="form-select" aria-label="Default select example" name="membre">
                                             <?php
 
-                               $users = $Scrum->getMembres();
-                               foreach ($users as $user){
-                                  echo "<option value='{$user['id_user']}'>{$user['First_name']} {$user['Last_name']}</option>";
-                             }
-                             ?>
+                                            $users = $Scrum->getMembres();
+                                            foreach ($users as $user) {
+                                                echo "<option value='{$user['id_user']}'>{$user['First_name']} {$user['Last_name']}</option>";
+                                            }
+                                            ?>
 
                                         </select>
 
@@ -79,9 +75,5 @@ $Scrum->addMember($id,$selectedMembre);
             </div>
         </div>
     </section>
-
-
-
 </body>
-
 </html>

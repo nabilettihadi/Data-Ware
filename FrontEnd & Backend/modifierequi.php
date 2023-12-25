@@ -1,8 +1,8 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ScrumMaster.php";
 $Scrum = new ScrumMaster();
@@ -11,13 +11,13 @@ $equipe = $Scrum->getEquipeById($id);
 
 
 if (isset($_POST["submit"])) {
-  $nom = $_POST["name"];
-  $dated = $_POST["dated"];
+    $nom = $_POST["name"];
+    $dated = $_POST["dated"];
 
-  $Scrum->updateEquipe($id, $nom, $dated); 
+    $Scrum->updateEquipe($id, $nom, $dated);
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,13 +54,13 @@ if (isset($_POST["submit"])) {
 
                                         <div class="form-floating mb-3">
                                             <input type="text" name="name" class="form-control" id="floatingInput"
-                                                value="<?=$equipe->getNameEquipe();?>" placeholder="name" required>
+                                                value="<?= $equipe->getNameEquipe(); ?>" placeholder="name" required>
                                             <label class="text-secondary" for="floatingInput">Nom d'équipe</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="date" name="dated" class="form-control" id="floatingInput"
-                                                value="<?=$equipe->getDateCreation();?>" placeholder="last" required>
+                                                value="<?= $equipe->getDateCreation(); ?>" placeholder="last" required>
                                             <label class="text-secondary" for="floatingInput">Date de creation</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
@@ -80,9 +80,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
-
 </body>
 
 </html>

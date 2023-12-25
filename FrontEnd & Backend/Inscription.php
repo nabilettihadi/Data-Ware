@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once "../src/Personne.php";
-
-
 $inscription = new Personne();
 
 if (isset($_POST["submit"])) {
@@ -13,8 +11,8 @@ if (isset($_POST["submit"])) {
 
     $inscription->processRegistration($nom, $prenom, $email, $mot_de_passe);
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,29 +50,33 @@ if (isset($_POST["submit"])) {
                                             <input type="text" name="prenom" class="form-control" id="floatingInput"
                                                 value="" placeholder="name">
                                             <label class="text-secondary" for="floatingInput">Prénom</label>
-                                            <span
-                                                class="ms-2 text-danger "><?php  echo  $inscription->erreur_prenom  ;?></span>
+                                            <span class="ms-2 text-danger ">
+                                                <?php echo $inscription->erreur_prenom; ?>
+                                            </span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="text" name="nom" class="form-control" id="floatingInput"
                                                 value="" placeholder="last">
                                             <label class="text-secondary" for="floatingInput">Nom</label>
-                                            <span
-                                                class="ms-2 text-danger "><?php  echo  $inscription->erreur_nom ;?></span>
+                                            <span class="ms-2 text-danger ">
+                                                <?php echo $inscription->erreur_nom; ?>
+                                            </span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="email" name="email" class="form-control" id="floatingInput"
                                                 value="" placeholder="name@example.com">
                                             <label class="text-secondary" for="floatingInput">Email address</label>
-                                            <span
-                                                class="ms-2 text-danger "><?php  echo  $inscription->erreur_email  ;?></span>
+                                            <span class="ms-2 text-danger ">
+                                                <?php echo $inscription->erreur_email; ?>
+                                            </span>
                                         </div>
                                         <div class="form-floating mb-3 ">
                                             <input type="password" name="password" class="form-control"
                                                 id="floatingPassword" placeholder="Password">
                                             <label class="text-secondary" for="floatingPassword">Mot de passe</label>
-                                            <span
-                                                class="ms-2 text-danger "><?php  echo  $inscription->erreur_mot_de_passe  ;?></span>
+                                            <span class="ms-2 text-danger ">
+                                                <?php echo $inscription->erreur_mot_de_passe; ?>
+                                            </span>
                                         </div>
 
                                         <div class="pt-1 mb-3 d-flex justify-content-end">
@@ -94,8 +96,6 @@ if (isset($_POST["submit"])) {
             </div>
         </div>
     </section>
-
-
 </body>
 
 </html>

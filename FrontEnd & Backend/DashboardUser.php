@@ -1,17 +1,18 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/User.php";
 
-$user= $_SESSION['username'];
-$membre= $_SESSION['id'];
+$user = $_SESSION['username'];
+$membre = $_SESSION['id'];
 $display = new User();
-$equipes= $display->afficheEquipe($membre,);
+$equipes = $display->afficheEquipe($membre, );
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,7 +53,9 @@ $equipes= $display->afficheEquipe($membre,);
                 </div>
             </div>
         </nav>
-        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
+        <h5 class="mt-2 ms-2">Bienvenue
+            <?php echo $user; ?> !
+        </h5>
         <h1 class="d-flex justify-content-center mt-5 mb-5"> Mes équipes </h1>
         <div class="container mt-4">
             <div class="row">
@@ -66,28 +69,29 @@ $equipes= $display->afficheEquipe($membre,);
                                 </tr>
                             </thead>
                             <?php
-                           
-                                foreach($equipes as $equipe){
-                                          ?>
-                            <tbody class="table-light ">
-                                <tr>
-                                    <td><?= $equipe->getNameEquipe();?></td>
-                                    <td><?= $equipe->getDateCreation();?></td>
-                                </tr>
-                            </tbody>
-                            <?php
-                                        
-                                   }
-                               ?>
+
+                            foreach ($equipes as $equipe) {
+                                ?>
+                                <tbody class="table-light ">
+                                    <tr>
+                                        <td>
+                                            <?= $equipe->getNameEquipe(); ?>
+                                        </td>
+                                        <td>
+                                            <?= $equipe->getDateCreation(); ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <?php
+
+                            }
+                            ?>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
 </body>
 
 </html>

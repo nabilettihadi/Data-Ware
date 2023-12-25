@@ -1,16 +1,16 @@
 <?php
 session_start();
-if($_SESSION['autoriser'] != "oui"){
-  header("Location: index.php");
-  exit();
+if ($_SESSION['autoriser'] != "oui") {
+    header("Location: index.php");
+    exit();
 }
 require_once "../src/ProductOwner.php";
-$user= $_SESSION['username'];
+$user = $_SESSION['username'];
 
 $affichage = new ProductOwner();
 $projects = $affichage->displayProjet();
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +54,9 @@ $projects = $affichage->displayProjet();
                 </div>
             </div>
         </nav>
-        <h5 class="mt-2 ms-2">Bienvenue <?php echo $user ; ?> !</h5>
+        <h5 class="mt-2 ms-2">Bienvenue
+            <?php echo $user; ?> !
+        </h5>
         <h1 class="d-flex justify-content-center mt-5"> Gestion du Projets </h1>
 
         <div class="container mt-4">
@@ -82,32 +84,42 @@ $projects = $affichage->displayProjet();
                                 </tr>
                             </thead>
                             <?php
-                   foreach ($projects as $projet)  {
+                            foreach ($projects as $projet) {
+                                ?>
+                                <tbody class="table-light">
+                                    <tr>
+                                        <td>
+                                            <?php echo $projet->getNomProjet(); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $projet->getDateDebut(); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $projet->getDateFin(); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $projet->getStatusProjet(); ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $projet->getScrumMaster(); ?>
+                                        </td>
+                                        <td><a href="modifier.php?id=<?= $projet->getIdProjets() ?>" class="ms-4"><i
+                                                    class="bi bi-pencil"></i></a></td>
+                                        <td><a href="supprimer.php?id=<?= $projet->getIdProjets() ?>"
+                                                class="text-danger ms-4"><i class="bi bi-trash3-fill"></i></a></td>
+                                    </tr>
+                                </tbody>
+                                <?php
+                            }
+
                             ?>
-                            <tbody class="table-light">
-                                <tr>
-                                    <td><?php echo $projet->getNomProjet(); ?></td>
-                                    <td><?php echo $projet->getDateDebut(); ?></td>
-                                    <td><?php echo $projet->getDateFin(); ?></td>
-                                    <td><?php echo $projet->getStatusProjet(); ?></td>
-                                    <td><?php echo $projet->getScrumMaster(); ?></td>
-                                    <td><a href="modifier.php?id=<?= $projet->getIdProjets() ?>" class="ms-4"><i
-                                                class="bi bi-pencil"></i></a></td>
-                                    <td><a href="supprimer.php?id=<?= $projet->getIdProjets() ?>"
-                                            class="text-danger ms-4"><i class="bi bi-trash3-fill"></i></a></td>
-                                </tr>
-                            </tbody>
-                            <?php
-                        }
-                    
-                    ?>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- <p class="text-center fs-5 fw-bolder text-danger"><?php echo $message;?></p> -->
+        <!-- <p class="text-center fs-5 fw-bolder text-danger"><?php echo $message; ?></p> -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

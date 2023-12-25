@@ -3,15 +3,17 @@ require_once "Personne.php";
 require_once "Projet.php";
 require_once "Equipe.php";
 
-class  User extends Personne{
+class User extends Personne
+{
 
-    public function afficheEquipe($membre) {
+    public function afficheEquipe($membre)
+    {
         $equipes = [];
-    
+
         $stmt = $this->db->prepare("SELECT * FROM equipes INNER JOIN users ON equipes.id_equipe = users.id_equip  WHERE id_user=:membre");
         $stmt->bindParam(':membre', $membre, PDO::PARAM_INT);
         $stmt->execute();
-    
+
         if ($stmt->rowCount() == 0) {
             echo "Il n'y a pas encore d'equipe.";
         } else {
@@ -24,18 +26,19 @@ class  User extends Personne{
                 );
                 $equipes[] = $equipe;
             }
-        }   
+        }
         return $equipes;
     }
 
-    public function afficheProjet($membre) {
+    public function afficheProjet($membre)
+    {
         $projects = [];
-    
+
         $stmt = $this->db->prepare("SELECT * FROM projets INNER JOIN equipes ON projets.equipe_id = equipes.id_equipe INNER JOIN users ON equipes.id_equipe = users.id_equip  WHERE id_user= :membre ");
         $stmt->bindParam(':membre', $membre, PDO::PARAM_INT);
         $stmt->execute();
-    
-    
+
+
         if ($stmt->rowCount() == 0) {
             echo "Il n'y a pas encore de projets.";
         } else {
@@ -52,10 +55,10 @@ class  User extends Personne{
                 $projects[] = $project;
             }
         }
-    
+
         return $projects;
     }
-    
+
 }
 
 ?>
