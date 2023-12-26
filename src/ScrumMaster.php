@@ -43,7 +43,7 @@ class ScrumMaster extends Personne
         $stmtEquipe->execute();
 
 
-        header("Location: DashboardScrum.php");
+        header("Location: Dashboard-Scrum.php");
         exit();
     }
 
@@ -72,7 +72,7 @@ class ScrumMaster extends Personne
         $success = $stmt->execute();
 
         if ($success) {
-            header("Location: DashboardScrum.php");
+            header("Location: Dashboard-Scrum.php");
             exit();
         } else {
             echo "Erreur lors de la mise à jour d'equipe.";
@@ -88,7 +88,7 @@ class ScrumMaster extends Personne
         $valide = $stmt->execute();
 
         if ($valide) {
-            header("Location: DashboardScrum.php");
+            header("Location: Dashboard-Scrum.php");
             exit();
         } else {
             echo "Erreur lors de la mise à jour d'equipe.";
@@ -123,7 +123,7 @@ class ScrumMaster extends Personne
         $stmt->bindParam(':membre_id', $membre_id, PDO::PARAM_INT);
         $success = $stmt->execute();
 
-        header("Location: Gestionequi.php");
+        header("Location: Gestion-Equipe.php");
         exit();
 
     }
@@ -150,7 +150,7 @@ class ScrumMaster extends Personne
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $success = $stmt->execute();
 
-        header("Location: Gestionequi.php");
+        header("Location: Gestion-Equipe.php");
         exit();
 
 

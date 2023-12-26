@@ -38,7 +38,7 @@ class ProductOwner extends Personne
         $stmt->execute();
 
 
-        header("Location: DashboardM.php");
+        header("Location: Dashboard-PO.php");
         exit();
     }
 
@@ -75,7 +75,7 @@ class ProductOwner extends Personne
         $success = $stmt->execute();
 
         if ($success) {
-            header("Location: DashboardM.php");
+            header("Location: Dashboard-PO.php");
             exit();
         } else {
             echo "Erreur lors de la mise à jour du projet.";
@@ -93,7 +93,7 @@ class ProductOwner extends Personne
         $valide = $stmt->execute();
 
         if ($valide) {
-            header("Location: DashboardM.php");
+            header("Location: Dashboard-PO.php");
             exit();
         } else {
             echo "Erreur lors de la mise à jour du projet.";
@@ -137,7 +137,7 @@ class ProductOwner extends Personne
         $statement->bindParam(':projectId', $projectId, PDO::PARAM_INT);
         $statement->execute();
 
-        header("Location: DashboardM.php");
+        header("Location: Dashboard-PO.php");
     }
 
     public function getUsersWithRole()
@@ -173,7 +173,7 @@ class ProductOwner extends Personne
         $stmt->execute();
 
 
-        header("Location: MembreP.php");
+        header("Location: Membre-PO.php");
         exit();
     }
 }

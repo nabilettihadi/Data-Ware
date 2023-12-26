@@ -5,18 +5,17 @@ if ($_SESSION['autoriser'] != "oui") {
     exit();
 }
 require_once "../src/ProductOwner.php";
-
-$ajouter = new ProductOwner();
-
+$ProductOwner = new ProductOwner();
+$id = $_GET['id'];
+$projet = $ProductOwner->getProjetById($id);
 if (isset($_POST["submit"])) {
     $nom = $_POST["name"];
     $dated = $_POST["dated"];
     $datef = $_POST["datef"];
-    $status = $_POST["statuss"];
+    $status = $_POST["status"];
 
-    $ajouter->createProjet($nom, $dated, $datef, $status);
+    $ProductOwner->updateProjet($id, $nom, $dated, $datef, $status);
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +37,7 @@ if (isset($_POST["submit"])) {
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
-                        <div class="d-flex justify-content-end px-3 py-1 "><a href="DashboardM.php"
+                        <div class="d-flex justify-content-end px-3 py-1 "><a href="Dashboard-PO.php"
                                 class="text-danger fs-5"><i class="bi bi-x-lg"></i></a></div>
                         <div class="row g-0">
                             <div class="col-md-6 col-lg-5 d-none px-2 d-md-flex align-items-center">
@@ -50,30 +49,33 @@ if (isset($_POST["submit"])) {
                                     <form method="post" action="">
 
 
-                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Créer un
-                                            nouveau projet</h5>
+                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Modifier le
+                                            projet</h5>
 
                                         <div class="form-floating mb-3">
                                             <input type="text" name="name" class="form-control" id="floatingInput"
-                                                value="" placeholder="name" required>
+                                                value="<?php echo $projet->getNomProjet(); ?>" placeholder="name"
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Nom du projet</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="date" name="dated" class="form-control" id="floatingInput"
-                                                value="" placeholder="last" required>
+                                                value="<?php echo $projet->getDateDebut(); ?>" placeholder="last"
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Date début</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="date" name="datef" class="form-control" id="floatingInput"
-                                                value="" placeholder="last" required>
+                                                value="<?php echo $projet->getDateFin(); ?>" placeholder="last"
+                                                required>
                                             <label class="text-secondary" for="floatingInput">Date fin</label>
                                             <span class="ms-2 text-danger "></span>
                                         </div>
                                         <label for="cars" class="mb-1">Status:</label>
-                                        <select class="form-select" aria-label="Default select example" name="statuss">
-                                            <option selected>en cours</option>
+                                        <select class="form-select" aria-label="Default select example" name="status">
+                                            <option value="en cours" selected>en cours</option>
                                             <option value="finaliser">finaliser</option>
                                         </select>
 

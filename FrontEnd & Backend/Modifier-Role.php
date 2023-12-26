@@ -5,15 +5,16 @@ if ($_SESSION['autoriser'] != "oui") {
     exit();
 }
 require_once "../src/ProductOwner.php";
+$id = $_GET['id'];
+$user = new ProductOwner();
+$users = $user->getUserById($id);
 
-$affiche = new ProductOwner();
-$projects = $affiche->getAllProjects();
-$Scrums = $affiche->getAllScrumMaster();
 
 if (isset($_POST["submit"])) {
-    $selectedProject = $_POST["projet"];
-    $selectedScrumMaster = $_POST["scrumMaster"];
-    $assigner = $affiche->updateScrumMaster($selectedProject, $selectedScrumMaster);
+    $role = $_POST["role"];
+
+    $user->updateRole($id, $role);
+
 }
 ?>
 
@@ -36,7 +37,7 @@ if (isset($_POST["submit"])) {
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
-                        <div class="d-flex justify-content-end px-3 py-1 "><a href="DashboardM.php"
+                        <div class="d-flex justify-content-end px-3 py-1 "><a href="Membre-PO.php"
                                 class="text-danger fs-5"><i class="bi bi-x-lg"></i></a></div>
                         <div class="row g-0">
                             <div class="col-md-6 col-lg-5 d-none px-2 d-md-flex align-items-center">
@@ -48,29 +49,29 @@ if (isset($_POST["submit"])) {
                                     <form method="post" action="">
 
 
-                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Affecter un
-                                            Scrum Master à un Projet</h5>
-                                        <label for="cars" class="my-2 ">Sélectionnez le Projet :</label>
-                                        <select class="form-select" aria-label="Default select example" name="projet">
-                                            <?php
-                                            foreach ($projects as $project) {
-                                                echo "<option value='{$project->getIdProjets()}'>{$project->getNomProjet()}</option>";
-                                            }
-                                            ?>
+                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Modifier le
+                                            role</h5>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="nom" class="form-control" id="floatingInput"
+                                                value="<?= $users['Last_name'] ?>" placeholder="name" readonly required>
+                                            <label class="text-secondary" for="floatingInput">Nom</label>
+                                            <span class="ms-2 text-danger "></span>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="prenom" class="form-control" id="floatingInput"
+                                                value="<?= $users['First_name'] ?>" placeholder="last" readonly
+                                                required>
+                                            <label class="text-secondary" for="floatingInput">Prénom</label>
+                                            <span class="ms-2 text-danger "></span>
+                                        </div>
 
+
+                                        <label for="cars" class="mb-1">Role:</label>
+                                        <select class="form-select" aria-label="Default select example" name="role">
+                                            <option value="user" selected>user</option>
+                                            <option value="scrum_master">scrum_master</option>
                                         </select>
 
-                                        <label for="cars" class="my-2">Sélectionnez le Scrum Master :</label>
-                                        <select class="form-select" aria-label="Default select example"
-                                            name="scrumMaster">
-                                            <?php
-                                            foreach ($Scrums as $Scrum) {
-                                                ?>
-                                                <option value='<?= $Scrum["id_user"] ?>'>
-                                                    <?= $Scrum["Last_name"] ?>
-                                                </option>
-                                            <?php } ?>
-                                        </select>
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
                                             <button class="btn btn-primary btn-lg btn-block" type="submit"
                                                 name="submit">Valider</button>

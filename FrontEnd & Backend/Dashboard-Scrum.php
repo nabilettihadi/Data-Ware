@@ -39,15 +39,15 @@ $equipes = $affichage->displayEquipe($membre);
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex gap-5">
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="DashboardScrum.php">Equipes</a>
+                            <a class="nav-link text-center" href="Dashboard-Scrum.php">Equipes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="Gestionequi.php">Membres</a>
+                            <a class="nav-link text-center" href="Gestion-Equipe.php">Membres</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-center" href="Assignation.php">Assignation</a>
                         </li>
-                        <a href="deconnexion.php"
+                        <a href="Deconnexion.php"
                             class="btn bg-danger p-2 rounded-3 text-light text-decoration-none "><i
                                 class="bi bi-box-arrow-left"></i> Deconnexion</a>
                     </ul>
@@ -63,7 +63,7 @@ $equipes = $affichage->displayEquipe($membre);
             <div class="row">
                 <div class="col">
                     <div class="d-flex justify-content-start gap-2">
-                        <a href="ajouterequi.php"
+                        <a href="Ajouter-Equipe.php"
                             class="col-md-auto col-sm-12 bg-primary p-2 rounded-3 text-light text-decoration-none btn mt-4"><i
                                 class="bi bi-bookmark-plus-fill"></i> Créer une nouveau équipe</a>
                     </div>
@@ -92,9 +92,9 @@ $equipes = $affichage->displayEquipe($membre);
                                         <td>
                                             <?php echo $equipe->getScrumMaster(); ?>
                                         </td>
-                                        <td><a href="modifierequi.php?id=<?= $equipe->getIdEquipe(); ?>" class="ms-4"><i
+                                        <td><a href="Modifier-Equipe.php?id=<?= $equipe->getIdEquipe(); ?>" class="ms-4"><i
                                                     class="bi bi-pencil"></i></a></th>
-                                        <td><a href="supprimerequi.php?id=<?= $equipe->getIdEquipe(); ?>"
+                                        <td><a href="Supprimer-Equipe.php?id=<?= $equipe->getIdEquipe(); ?>"
                                                 class="text-danger ms-4"><i class="bi bi-trash3-fill"></i></a></th>
 
                                     </tr>

@@ -3,13 +3,13 @@ session_start();
 if (isset($_SESSION['autoriser']) && $_SESSION['autoriser'] == "oui") {
 
     if ($_SESSION['role'] == 'user') {
-        header("Location: DashboardUser.php");
+        header("Location: Dashboard-User.php");
         exit();
     } elseif ($_SESSION['role'] == 'scrum_master') {
-        header("Location: DashboardScrum.php");
+        header("Location: Dashboard-Scrum.php");
         exit();
     } else {
-        header("Location: DashboardM.php");
+        header("Location: Dashboard-PO.php");
         exit();
     }
 }

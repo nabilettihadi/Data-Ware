@@ -38,16 +38,16 @@ $projets = $display->displayProjEqui();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex gap-5">
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="DashboardScrum.php">Equipes</a>
+                            <a class="nav-link text-center" href="Dashboard-Scrum.php">Equipes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="Gestionequi.php">Membres</a>
+                            <a class="nav-link text-center" href="Gestion-Equipe.php">Membres</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-center" href="Assignation.php">Assignation</a>
                         </li>
 
-                        <a href="deconnexion.php"
+                        <a href="Deconnexion.php"
                             class="btn bg-danger p-2 rounded-3 text-light text-decoration-none "><i
                                 class="bi bi-box-arrow-left"></i> Deconnexion</a>
                     </ul>
@@ -63,7 +63,7 @@ $projets = $display->displayProjEqui();
             <div class="row">
                 <div class="col">
                     <div class="d-flex justify-content-start gap-2">
-                        <a href="AssignerEqui.php"
+                        <a href="Assigner-Equipe.php"
                             class="col-md-auto col-sm-12 bg-primary p-2 rounded-3 text-light text-decoration-none btn mt-4"><i
                                 class="bi bi-bookmark-plus-fill"></i> Affecter une équipe à un projet</a>
                     </div>

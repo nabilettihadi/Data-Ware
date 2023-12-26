@@ -6,9 +6,8 @@ if ($_SESSION['autoriser'] != "oui") {
 }
 require_once "../src/ProductOwner.php";
 $user = $_SESSION['username'];
-
-$affichage = new ProductOwner();
-$projects = $affichage->displayProjet();
+$productOwner = new ProductOwner();
+$users = $productOwner->getUsersWithRole();
 ?>
 
 <!DOCTYPE html>
@@ -38,16 +37,16 @@ $projects = $affichage->displayProjet();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex gap-5">
                         <li class="nav-item text-center">
-                            <a class="nav-link" href="DashboardM.php">Projets</a>
+                            <a class="nav-link" href="Dashboard-PO.php">Projets</a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-link" href="MembreP.php">Membres</a>
+                            <a class="nav-link" href="Membre-PO.php">Membres</a>
                         </li>
                         <li class="nav-item text-center">
-                            <a class="nav-link" href="assigner.php">Assignation</a>
+                            <a class="nav-link" href="Assigner-Scrum.php">Assignation</a>
                         </li>
 
-                        <a href="deconnexion.php"
+                        <a href="Deconnexion.php"
                             class="btn bg-danger p-2 rounded-3 text-light text-decoration-none "><i
                                 class="bi bi-box-arrow-left"></i> Deconnexion</a>
                     </ul>
@@ -57,72 +56,58 @@ $projects = $affichage->displayProjet();
         <h5 class="mt-2 ms-2">Bienvenue
             <?php echo $user; ?> !
         </h5>
-        <h1 class="d-flex justify-content-center mt-5"> Gestion du Projets </h1>
+  
+        <h1 class="d-flex justify-content-center mt-5"> Gestion du Membres </h1>
 
         <div class="container mt-4">
             <div class="row">
                 <div class="col">
-                    <div class="d-flex flex-wrap justify-content-start gap-2 mt-4">
-                        <a href="ajouter.php"
-                            class="col-md-auto col-sm-12 bg-primary p-2 rounded-3 text-light text-decoration-none btn mb-2">
-                            <i class="bi bi-bookmark-plus-fill"></i> Créer un nouveau projet</a>
-                        <a href="assigner.php"
-                            class="col-md-auto col-sm-12 bg-primary p-2 rounded-3 text-light text-decoration-none btn mb-2">
-                            <i class="bi bi-bookmark-plus-fill"></i> Affecter un Scrum Master à un Projet </a>
-                    </div>
                     <div class="table-responsive">
-                        <table class="table table-primary table-hover">
+                        <table class="table table-primary mt-4 table-hover">
                             <thead>
                                 <tr>
-                                    <th class="align-middle">Nom du projet</th>
-                                    <th class="align-middle">Date début</th>
-                                    <th class="align-middle">Date fin</th>
-                                    <th class="align-middle">Status</th>
-                                    <th class="align-middle">Scrum Master</th>
-                                    <th class="align-middle">Modifier</th>
-                                    <th class="align-middle">Supprimer</th>
+                                    <th class=" align-middle"> Nom </th>
+                                    <th class=" align-middle">Prénom</th>
+                                    <th class=" align-middle">Email</th>
+                                    <th class=" align-middle">Role</th>
+                                    <th class=" align-middle">Modifier le role</th>
                                 </tr>
                             </thead>
                             <?php
-                            foreach ($projects as $projet) {
+                            foreach ($users as $user) {
+
                                 ?>
-                                <tbody class="table-light">
+                                <tbody class="table-light ">
                                     <tr>
                                         <td>
-                                            <?php echo $projet->getNomProjet(); ?>
+                                            <?= $user['Last_name']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $projet->getDateDebut(); ?>
+                                            <?php echo $user['First_name']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $projet->getDateFin(); ?>
+                                            <?php echo $user['email']; ?>
                                         </td>
                                         <td>
-                                            <?php echo $projet->getStatusProjet(); ?>
+                                            <?php echo $user['role']; ?>
                                         </td>
-                                        <td>
-                                            <?php echo $projet->getScrumMaster(); ?>
-                                        </td>
-                                        <td><a href="modifier.php?id=<?= $projet->getIdProjets() ?>" class="ms-4"><i
-                                                    class="bi bi-pencil"></i></a></td>
-                                        <td><a href="supprimer.php?id=<?= $projet->getIdProjets() ?>"
-                                                class="text-danger ms-4"><i class="bi bi-trash3-fill"></i></a></td>
+                                        <td><a href="Modifier-Role.php?id=<?= $user['id_user'] ?>" class="ms-5"><i
+                                                    class="bi bi-pencil"></i></a></th>
+
+
                                     </tr>
                                 </tbody>
                                 <?php
-                            }
+                            } ?>
 
-                            ?>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- <p class="text-center fs-5 fw-bolder text-danger"><?php echo $message; ?></p> -->
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

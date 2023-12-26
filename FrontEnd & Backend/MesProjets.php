@@ -38,13 +38,13 @@ $projects = $affiche->afficheProjet($membre);
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex gap-5">
                         <li class="nav-item">
-                            <a class="nav-link text-center" href="DashboardUser.php">Mes équipes</a>
+                            <a class="nav-link text-center" href="Dashboard-User.php">Mes équipes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-center" href="MesProjets.php">Mes projets</a>
                         </li>
 
-                        <a href="deconnexion.php"
+                        <a href="Deconnexion.php"
                             class="btn bg-danger p-2 rounded-3 text-light text-decoration-none "><i
                                 class="bi bi-box-arrow-left"></i> Deconnexion</a>
                     </ul>

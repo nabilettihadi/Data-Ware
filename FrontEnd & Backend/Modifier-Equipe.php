@@ -5,13 +5,16 @@ if ($_SESSION['autoriser'] != "oui") {
     exit();
 }
 require_once "../src/ScrumMaster.php";
-
-$id = $_GET['equipe_id'];
 $Scrum = new ScrumMaster();
-if (isset($_POST["submit"])) {
-    $selectedMembre = $_POST["membre"];
+$id = $_GET['id'];
+$equipe = $Scrum->getEquipeById($id);
 
-    $Scrum->addMember($id, $selectedMembre);
+
+if (isset($_POST["submit"])) {
+    $nom = $_POST["name"];
+    $dated = $_POST["dated"];
+
+    $Scrum->updateEquipe($id, $nom, $dated);
 }
 ?>
 
@@ -34,7 +37,7 @@ if (isset($_POST["submit"])) {
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
-                        <div class="d-flex justify-content-end px-3 py-1 "><a href="Gestionequi.php"
+                        <div class="d-flex justify-content-end px-3 py-1 "><a href="Dashboard-Scrum.php"
                                 class="text-danger fs-5"><i class="bi bi-x-lg"></i></a></div>
                         <div class="row g-0">
                             <div class="col-md-6 col-lg-5 d-none px-2 d-md-flex align-items-center">
@@ -46,19 +49,21 @@ if (isset($_POST["submit"])) {
                                     <form method="post" action="">
 
 
-                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Ajouter un
-                                            membre </h5>
-                                        <label for="cars" class="my-2 ">Sélectionnez un membre :</label>
-                                        <select class="form-select" aria-label="Default select example" name="membre">
-                                            <?php
+                                        <h5 class="fw-semibold mb-3 mt-3 pb-3" style="letter-spacing: 1px;">Créer une
+                                            nouveau équipe</h5>
 
-                                            $users = $Scrum->getMembres();
-                                            foreach ($users as $user) {
-                                                echo "<option value='{$user['id_user']}'>{$user['First_name']} {$user['Last_name']}</option>";
-                                            }
-                                            ?>
-
-                                        </select>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="name" class="form-control" id="floatingInput"
+                                                value="<?= $equipe->getNameEquipe(); ?>" placeholder="name" required>
+                                            <label class="text-secondary" for="floatingInput">Nom d'équipe</label>
+                                            <span class="ms-2 text-danger "></span>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="date" name="dated" class="form-control" id="floatingInput"
+                                                value="<?= $equipe->getDateCreation(); ?>" placeholder="last" required>
+                                            <label class="text-secondary" for="floatingInput">Date de creation</label>
+                                            <span class="ms-2 text-danger "></span>
+                                        </div>
 
                                         <div class="pt-1 mb-3 d-flex mt-2 justify-content-end">
                                             <button class="btn btn-primary btn-lg btn-block" type="submit"
@@ -76,4 +81,5 @@ if (isset($_POST["submit"])) {
         </div>
     </section>
 </body>
+
 </html>

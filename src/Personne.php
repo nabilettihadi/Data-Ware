@@ -1,5 +1,5 @@
 <?php
-require_once "conn.php";
+require_once "Connexion.php";
 class Personne
 {
     protected $id_user;
@@ -78,11 +78,11 @@ class Personne
             $_SESSION['autoriser'] = "oui";
 
             if ($fetch["role"] == "user") {
-                header("Location: DashboardUser.php");
+                header("Location: Dashboard-User.php");
             } elseif ($fetch["role"] == "scrum_master") {
-                header("Location: DashboardScrum.php");
+                header("Location: Dashboard-Scrum.php");
             } else
-                header("Location: DashboardM.php");
+                header("Location: Dashboard-PO.php");
 
 
 
@@ -133,7 +133,7 @@ class Personne
             $stmt->bindParam(':mot_de_passe', $mot_de_passe);
             $stmt->execute();
 
-            header("Location: validation.php");
+            header("Location: Validation.php");
         }
     }
 

@@ -37,7 +37,7 @@ if (isset($_POST["submit"])) {
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-xl-10">
                     <div class="card" style="border-radius: 1rem;">
-                        <div class="d-flex justify-content-end px-3 py-1 "><a href="DashboardScrum.php"
+                        <div class="d-flex justify-content-end px-3 py-1 "><a href="Dashboard-Scrum.php"
                                 class="text-danger fs-5"><i class="bi bi-x-lg"></i></a></div>
                         <div class="row g-0">
                             <div class="col-md-6 col-lg-5 d-none px-2 d-md-flex align-items-center">
